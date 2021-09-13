@@ -54,11 +54,11 @@ public class A_Fuga extends JFrame{
 
 	}
 	
-	public static void planetaTaltris() {
+	public void planetaTaltris() {
 		
 	}
 	
-	public static void planetaJacali() {
+	public void planetaJacali() {
 		
 		
 	}
