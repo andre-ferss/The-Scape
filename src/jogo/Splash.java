@@ -10,8 +10,8 @@ import javax.swing.SwingConstants;
 
 public class Splash {
 
-	private final int LARGURA_IMG = 405;
-	private final int ALTURA_IMG = 405;
+	private final int LARGURA_IMG = 498;
+	private final int ALTURA_IMG = 280;
 	private final int TEMPO_DE_SPLASH = 4000;
 	private ImageIcon logo;
 
