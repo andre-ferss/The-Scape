@@ -1,3 +1,4 @@
+package jogo;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -64,7 +65,7 @@ public class A_Fuga extends JFrame{
 	}
 	
 	public static void main(String args[]) {
-		
+		new Splash();
 		A_Fuga frame = new A_Fuga();
 		frame.setTitle("The-Scape");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
