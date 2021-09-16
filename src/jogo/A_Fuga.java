@@ -3,6 +3,8 @@ package jogo;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -16,6 +18,7 @@ public class A_Fuga extends JFrame {
 	private Container container;
 	private static JTextArea textArea,textArea1,textArea2;
 	String planet;
+	static Font newFont;
 	private JTextField timerField;
 	private int count;
 	private JProgressBar progressBar;
@@ -47,7 +50,10 @@ public class A_Fuga extends JFrame {
 	private ImageIcon imglivro = new ImageIcon(getClass().getResource("livro.png"));
 	private ImageIcon imgrunas = new ImageIcon(getClass().getResource("runas.png"));
 	private ImageIcon imgtapa = new ImageIcon(getClass().getResource("tapa.png"));
-
+	
+	static GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+	
+		
 
 	public A_Fuga() {
 
@@ -73,7 +79,7 @@ public class A_Fuga extends JFrame {
 		pane.add(runa);
 		
 		textArea1 = new JTextArea();
-		textArea1.setFont(new Font("04b", 0, 18));
+		textArea1.setFont(newFont);
 		textArea1.setOpaque(false);
 		textArea1.setEditable(false);
 		textArea1.setBounds(10, 10, 800, 650);
@@ -82,7 +88,7 @@ public class A_Fuga extends JFrame {
 		textArea1.setVisible(false);
 		
 		textArea2 = new JTextArea();
-		textArea2.setFont(new Font("04b", 0, 18));
+		textArea2.setFont(newFont);
 		textArea2.setOpaque(false);
 		textArea2.setEditable(false);
 		textArea2.setBounds(10, 900, 800, 650);
@@ -146,7 +152,7 @@ public class A_Fuga extends JFrame {
 
 		pousar1 = new JButton("Pousar no meio da cidade");
 		pousar1.setBounds(50, 680, 400, 30);
-		pousar1.setFont(new Font("04b", 0, 18));
+		pousar1.setFont(newFont);
 		pousar1.setBackground(new Color(255, 228, 181));
 		pousar1.setForeground(Color.BLACK);
 		pane.add(pousar1);
@@ -155,7 +161,7 @@ public class A_Fuga extends JFrame {
 		pousar2 = new JButton("Pousar em um local escondido");
 		pousar2.setBounds(500, 680, 500, 30);
 		pousar2.setBackground(new Color(255, 228, 181));
-		pousar2.setFont(new Font("04b", 0, 18));
+		pousar2.setFont(newFont);
 		pousar2.setForeground(Color.BLACK);
 		pane.add(pousar2);
 		pousar2.setVisible(false);
@@ -206,7 +212,7 @@ public class A_Fuga extends JFrame {
 		textArea.setOpaque(false);
 		textArea.setWrapStyleWord(true);
 		textArea.setLineWrap(true);
-		textArea.setFont(new Font("04b", 0, 18));
+		textArea.setFont(newFont);
 		textArea.setEditable(false);
 		textArea.setBounds(30, 50, 700, 200);
 		textArea.setForeground(Color.BLACK);
@@ -215,13 +221,13 @@ public class A_Fuga extends JFrame {
 		planet1 = new JLabel("Taltris");
 		planet1.setBounds(660, 200, 576, 288);
 		planet1.setForeground(Color.BLACK);
-		planet1.setFont(new Font("04b", 0, 18));
+		planet1.setFont(newFont);
 		pane.add(planet1);
 
 		planet2 = new JLabel("Jacali");
 		planet2.setBounds(670, 400, 576, 288);
 		planet2.setForeground(Color.BLACK);
-		planet2.setFont(new Font("04b", 0, 18));
+		planet2.setFont(newFont);
 		pane.add(planet2);
 
 		taltris = new JButton(imgtaltris);
@@ -247,15 +253,16 @@ public class A_Fuga extends JFrame {
 	}
 
 	private void definirEventos() {
-		pousar1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {					
-				gameOver("GAME OVER\n"
-						+ "No meio da cidade,\n"
-						+ "voce acaba ficando muito exposto\n"
-						+ "e acaba sofrendo um ataque de alienigenas\n"
-						+ "carniceiros mortos de fome!\n"
-						+ "Todos foram comidos!");
-			}
+		
+	pousar1.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {					
+			gameOver("GAME OVER\n"
+					+ "No meio da cidade,\n"
+					+ "voce acaba ficando muito exposto\n"
+					+ "e acaba sofrendo um ataque de alienigenas\n"
+					+ "carniceiros mortos de fome!\n"
+					+ "Todos foram comidos!");
+		}
 	});	
 
 	pousar2.addActionListener(new ActionListener() {
@@ -268,8 +275,8 @@ public class A_Fuga extends JFrame {
 					+"decidem investigar\n\n"		
 					+"Entao eles pousam\n\n"
 					+"no local indicado.");
-			}
-		});
+		}
+	});
 	
 	arma2.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {			
@@ -279,8 +286,8 @@ public class A_Fuga extends JFrame {
 				+ "mas sua pontaria e horrivel e ele\n"
 				+ "nao acerta a sua cabeca,\n"
 				+ "assim o Alien mata um por um.");
-	}
-});
+		}
+	});
 		
 	macarico.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {
@@ -296,115 +303,101 @@ public class A_Fuga extends JFrame {
 				+ "mas e encontrado pelos outros e morto com seus membros\n"
 				+ "sendo arrancados um por um.\n"
 				+ "Todos morreram e foram servidos na janta");
-	}});
+		}
+	});
 
 		// TALTRIS
-		taltris.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-
-				planetaTaltris();
-			}
-		});
+	taltris.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+			planetaTaltris();
+		}
+	});
 		// A합ES AO POUSAR A NAVE
-		pousar1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+	pousar1.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+			pousar();
+		}
+	});
 
-				pousar();
-			}
-		});
-
-		pousar2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-
-				pousar();
-			}
-		});
+	pousar2.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+			pousar();
+		}
+	});
 
 		// A합ES AO SAIR DA NAVE
-		sair1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+	sair1.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+			sairDaNave1();
+		}
+	});
 
-				sairDaNave1();
-
-			}
-		});
-
-		sair2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-
+	sair2.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
 				sairDaNave2();
 				decisao();
-			}
-		});
+		}
+	});
 
 		// A합ES PARA A PRIMEIRA ESCOLHA DE OP합ES DAS FERRAMENTAS
 
-		btmacarico.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+	btmacarico.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+			btmacaricoCRT();
+		}
+	});
 
-				btmacaricoCRT();
-			}
-		});
+	btarma2.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
 
-		btarma2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+			btarmaERD();
+		}
+	});
 
-				btarmaERD();
-			}
-
-		});
-
-		btcanivete.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-
-				btcaniveteERD();
-			}
-		});
+	btcanivete.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+			btcaniveteERD();
+		}
+	});
 
 		// TAPA NA CARA
-		tapa.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-
-				tapa();
-			}
-		});
+	tapa.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+			tapa();
+		}
+	});
 
 		// A합ES PARA A SEGUNDA ESCOLHA DE OP합ES DAS FERRAMENTAS
 
-		canivete.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+	canivete.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+			caniveteCRT();
+		}
+	});
 
-				caniveteCRT();
-			}
-		});
+	macarico.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+			opcErrada2();
+		}
+	});
 
-		macarico.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-
-				opcErrada2();
-			}
-		});
-
-		arma2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-
-				opcErrada2();
-			}
-		});
+	arma2.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+			opcErrada2();
+		}
+	});
 
 		// JACALI
 
-		jacali.addActionListener(new ActionListener() {
+	jacali.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+			newGame("Feh consegue ver naves alienigenas a frente.\n\n"
+					+ "-Cuidado, estamos sendo atacados. Nao deixe nos atingirem.\n\n" + "Diz Feh para Bart.",
+					"Jacali");
+		}
+	});
 
-				newGame("Feh consegue ver naves alienigenas a frente.\n\n"
-						+ "-Cuidado, estamos sendo atacados. Nao deixe nos atingirem.\n\n" + "Diz Feh para Bart.",
-						"Jacali");
-
-			}
-		});
-
-	}
+}
 
 	// TALTRIS
 	public void planetaTaltris() {
@@ -777,7 +770,7 @@ public class A_Fuga extends JFrame {
 		textArea.setWrapStyleWord(true);
 		textArea.setLineWrap(true);
 		textArea.setText(text);
-		textArea.setFont(new Font("04b", 0, 18));
+		textArea.setFont(newFont);
 		textArea.setForeground(Color.BLACK);
 		textArea.setEditable(false);
 		textArea.setBounds(40, 80, 700, 300);
@@ -817,7 +810,7 @@ public class A_Fuga extends JFrame {
 		timerField.setEditable(false);
 		timerField.setBorder(null);
 		timerField.setOpaque(false);
-		timerField.setFont(new Font("04b", 0, 35));
+		timerField.setFont(newFont);
 		timerField.setForeground(Color.BLACK);
 		timerField.setBounds(500, 300, 80, 80);
 
@@ -879,7 +872,7 @@ public class A_Fuga extends JFrame {
 		textArea.setText(
 				"Rumo ao planeta Jacali em sua nave, eles acabam batendo em algo e milagrosamente a nave nao explodiu. Bart preocupado pergunta:"
 						+ "\n\n- Todos bem?\n\nOs dois respondem:");
-		textArea.setFont(new Font("04b", 0, 18));
+		textArea.setFont(newFont);
 		textArea.setForeground(Color.BLACK);
 		textArea.setEditable(false);
 		textArea.setBounds(40, 80, 500, 300);
@@ -887,7 +880,7 @@ public class A_Fuga extends JFrame {
 		ironia = new JRadioButton("Nao, nao, a nave bateu e eu to morrendo aqui. HAHAHA (TOM IRONICO)");
 		ironia.setFocusable(false);
 		ironia.setOpaque(false);
-		ironia.setFont(new Font("04b", 0, 16));
+		ironia.setFont(newFont);
 		ironia.setForeground(Color.BLACK);
 		ironia.setBounds(50, 300, 1000, 30);
 		ironia.addActionListener(new ActionListener() {
@@ -908,7 +901,7 @@ public class A_Fuga extends JFrame {
 		estupidez = new JRadioButton("Mas e claro que nao, seu idiota! (TOM ESTUPIDO)");
 		estupidez.setFocusable(false);
 		estupidez.setOpaque(false);
-		estupidez.setFont(new Font("04b", 0, 16));
+		estupidez.setFont(newFont);
 		estupidez.setForeground(Color.BLACK);
 		estupidez.setBounds(50, 350, 800, 30);
 		estupidez.addActionListener(new ActionListener() {
@@ -929,7 +922,7 @@ public class A_Fuga extends JFrame {
 		amigavel = new JRadioButton("Sim, estamos! (TOM AMIGAVEL)");
 		amigavel.setFocusable(false);
 		amigavel.setOpaque(false);
-		amigavel.setFont(new Font("04b", 0, 16));
+		amigavel.setFont(newFont);
 		amigavel.setForeground(Color.BLACK);
 		amigavel.setBounds(50, 400, 800, 30);
 		amigavel.addActionListener(new ActionListener() {
@@ -980,7 +973,7 @@ public class A_Fuga extends JFrame {
 		textArea.setWrapStyleWord(true);
 		textArea.setLineWrap(true);
 		textArea.setText(text);
-		textArea.setFont(new Font("04b", 0, 18));
+		textArea.setFont(newFont);
 		textArea.setForeground(Color.BLACK);
 		textArea.setEditable(false);
 		textArea.setBounds(25, 60, 500, 1000);
@@ -1045,7 +1038,7 @@ public class A_Fuga extends JFrame {
 		textArea.setWrapStyleWord(true);
 		textArea.setLineWrap(true);
 		textArea.setText(text);
-		textArea.setFont(new Font("04b", 0, 18));
+		textArea.setFont(newFont);
 		textArea.setForeground(Color.BLACK);
 		textArea.setEditable(false);
 		textArea.setBounds(30, 80, 500, 500);
@@ -1118,7 +1111,7 @@ public class A_Fuga extends JFrame {
 		textArea.setWrapStyleWord(true);
 		textArea.setLineWrap(true);
 		textArea.setText(text);
-		textArea.setFont(new Font("04b", 0, 18));
+		textArea.setFont(newFont);
 		textArea.setForeground(Color.BLACK);
 		textArea.setEditable(false);
 		textArea.setBounds(40, 80, 500, 200);
@@ -1127,7 +1120,7 @@ public class A_Fuga extends JFrame {
 		timerField.setOpaque(false);
 		timerField.setEditable(false);
 		timerField.setBorder(null);
-		timerField.setFont(new Font("04b", 0, 18));
+		timerField.setFont(newFont);
 		timerField.setForeground(Color.BLACK);
 		timerField.setBounds(500, 300, 20, 20);
 
@@ -1199,7 +1192,7 @@ public class A_Fuga extends JFrame {
 		textArea.setWrapStyleWord(true);
 		textArea.setLineWrap(true);
 		textArea.setText(text);
-		textArea.setFont(new Font("04b", 0, 18));
+		textArea.setFont(newFont);
 		textArea.setForeground(Color.BLACK);
 		textArea.setEditable(false);
 		textArea.setBounds(40, 80, 500, 500);
@@ -1227,7 +1220,7 @@ public class A_Fuga extends JFrame {
 		textArea = new JTextArea(message);
 		textArea.setBounds(10, 10, 1000, 400);
 		textArea.setEditable(false);
-		textArea.setFont(new Font("04b", 0, 26));
+		textArea.setFont(newFont);
 		textArea.setForeground(Color.WHITE);
 		textArea.setBackground(Color.BLACK);
 
@@ -1252,7 +1245,7 @@ public class A_Fuga extends JFrame {
 		textArea.setWrapStyleWord(true);
 		textArea.setLineWrap(true);
 		textArea.setText(text);
-		textArea.setFont(new Font("04b", 0, 18));
+		textArea.setFont(newFont);
 		textArea.setForeground(Color.BLACK);
 		textArea.setEditable(false);
 		textArea.setBounds(40, 80, 500, 300);
@@ -1348,6 +1341,17 @@ public class A_Fuga extends JFrame {
 	}
 
 	public static void main(String args[]) {
+		
+		try {
+			
+			newFont = Font.createFont(Font.TRUETYPE_FONT, new File("04B_30__.TTF")).deriveFont(15f);
+			ge.registerFont(newFont);
+			
+		}catch(FontFormatException e) {
+			
+		}catch(IOException e) {
+			
+		}
 
 		A_Fuga frame = new A_Fuga();
 		frame.setTitle("The-Scape");
